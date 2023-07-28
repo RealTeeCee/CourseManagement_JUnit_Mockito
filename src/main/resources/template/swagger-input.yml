@@ -1,0 +1,2692 @@
+---
+openapi: 3.0.1
+info:
+  title: OpenApi Specification - Nguyen Test ClickAndLearn
+  description: OpenApi documentation for Spring Security
+  termsOfService: https://cmapi.com
+  contact:
+    name: ClickAndLearnProject
+    url: https://cmapi.com
+    email: contact@cmproj.com
+  license:
+    name: Licences
+    url: https://some-url.com
+  version: "1.0"
+servers:
+  - url: http://localhost:8080
+security:
+  - bearerAuth: []
+paths:
+  "/tag":
+    get:
+      tags:
+        - Tag Endpoints
+      summary: "[ANORNYMOUS] - GET All Tags"
+      operationId: getAllTags
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/TagDto"
+    put:
+      tags:
+        - Tag Endpoints
+      summary: "[ADMIN, MANAGER, EMP_COURSE] - Update Tag"
+      operationId: update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TagDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/BaseDto"
+    post:
+      tags:
+        - Tag Endpoints
+      summary: "[ADMIN, MANAGER, EMP_COURSE] - Create Tag"
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/TagDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/BaseDto"
+    delete:
+      tags:
+        - Tag Endpoints
+      summary: "[ADMIN, MANAGER, EMP_COURSE] - Delete Tag"
+      operationId: delete
+      parameters:
+        - name: tagId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/BaseDto"
+
+  "/category":
+    get:
+      tags:
+        - Category Endpoints
+      summary: "[ANORNYMOUS] - GET All Categories"
+      operationId: getAllCategories
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/CategoryDto"
+    post:
+      tags:
+        - Category Endpoints
+      summary: "[ADMIN, MANAGER] - Create Category"
+      operationId: createCategory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CategoryDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/BaseDto"
+    put:
+      tags:
+        - Category Endpoints
+      summary: "[ADMIN, MANAGER] - Update Category"
+      operationId: updateCategory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CategoryDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/BaseDto"
+    delete:
+      tags:
+        - Category Endpoints
+      summary: "[ADMIN, MANAGER] - Delete Category"
+      operationId: deleteCategory
+      parameters:
+        - name: categoryId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                "$ref": "#/components/schemas/BaseDto"
+  /category/{categoryId}:
+    get:
+      tags:
+        - Category Endpoints
+      summary: "[ANORNYMOUS] - GET Category By Id"
+      operationId: getCategoryById
+      parameters:
+        - in: path
+          name: categoryId
+          required: true
+          description: Categoty ID
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: object
+                $ref: "#/components/schemas/CategoryDto"
+components:
+  schemas:
+    ErrorDetails:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        antType:
+          type: string
+          enum:
+            - success
+            - error
+            - warning
+        message:
+          type: string
+        details:
+          type: string
+        statusCode:
+          type: string
+    TagDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    BaseDto:
+      type: object
+      properties:
+        antType:
+          type: string
+          enum:
+            - success
+            - error
+            - warning
+        message:
+          type: string
+    LessonDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        duration:
+          type: integer
+          format: int32
+        sectionId:
+          type: integer
+          format: int64
+        updatedBy:
+          type: string
+        status:
+          type: integer
+          format: int32
+        ordered:
+          type: integer
+          format: int32
+        completed:
+          type: boolean
+    SectionDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        updatedBy:
+          type: string
+        courseId:
+          type: integer
+          format: int64
+        status:
+          type: integer
+          format: int32
+        ordered:
+          type: integer
+          format: int32
+    BlogDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        slug:
+          type: string
+        status:
+          type: integer
+          format: int32
+        description:
+          type: string
+        updatedBy:
+          type: string
+        view_count:
+          type: integer
+          format: int32
+        user_id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        image:
+          type: string
+        category_name:
+          type: string
+        category_id:
+          type: integer
+          format: int64
+    UserDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        first_name:
+          type: string
+        last_name:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        imageUrl:
+          type: string
+        permissions:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        provider:
+          type: string
+          enum:
+            - local
+            - facebook
+            - google
+            - github
+            - linkedin
+        providerId:
+          type: string
+        role:
+          type: string
+          enum:
+            - USER
+            - ADMIN
+            - MANAGER
+            - EMPLOYEE
+        status:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        verified:
+          type: boolean
+        notify:
+          type: boolean
+    PermissionDto:
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        permissions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Permissions"
+        role:
+          "$ref": "#/components/schemas/Roles"
+    Permissions:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        permission:
+          type: string
+        role:
+          "$ref": "#/components/schemas/Roles"
+    Roles:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          enum:
+            - USER
+            - ADMIN
+            - MANAGER
+            - EMPLOYEE
+    AchievementDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        courses:
+          type: string
+    LessonTrackingDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        enrollmentId:
+          type: integer
+          format: int64
+        courseId:
+          type: integer
+          format: int64
+        sectionId:
+          type: integer
+          format: int64
+        lessonId:
+          type: integer
+          format: int64
+        videoId:
+          type: integer
+          format: int64
+        resumePoint:
+          type: integer
+          format: int32
+        completed:
+          type: boolean
+        tracked:
+          type: boolean
+    NoteDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        enrollmentId:
+          type: integer
+          format: int64
+        courseId:
+          type: integer
+          format: int64
+        sectionId:
+          type: integer
+          format: int64
+        lessonId:
+          type: integer
+          format: int64
+        videoId:
+          type: integer
+          format: int64
+        resumePoint:
+          type: integer
+          format: int32
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        completed:
+          type: boolean
+        tracked:
+          type: boolean
+    SubcribesDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        authorId:
+          type: integer
+          format: int64
+        authorName:
+          type: string
+        image:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    AnswerDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+        updatedBy:
+          type: string
+        questionId:
+          type: integer
+          format: int64
+        userAnswerId:
+          type: integer
+          format: int64
+        correct:
+          type: boolean
+    CommentDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        userName:
+          type: string
+        imageUrl:
+          type: string
+        role:
+          type: string
+          enum:
+            - USER
+            - ADMIN
+            - MANAGER
+            - EMPLOYEE
+        content:
+          type: string
+        postId:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+    PostDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        content:
+          type: string
+        userId:
+          type: integer
+          format: int64
+        userName:
+          type: string
+        role:
+          type: string
+          enum:
+            - USER
+            - ADMIN
+            - MANAGER
+            - EMPLOYEE
+        typeId:
+          type: integer
+          format: int64
+        type:
+          type: string
+          enum:
+            - COURSE
+            - BLOG
+        likedUsers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/UserDto"
+        comments:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CommentDto"
+        postImageUrl:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    NotificationRequestDto:
+      type: object
+      properties:
+        postId:
+          type: integer
+          format: int64
+        content:
+          type: string
+        commentId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+    Achievement:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        courses:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Course"
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        title:
+          type: string
+        information:
+          type: string
+        image:
+          type: string
+        updatedBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        courses:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Course"
+    Blog:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        slug:
+          type: string
+        status:
+          type: integer
+          format: int32
+        description:
+          type: string
+        view_count:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+        image:
+          type: string
+        user:
+          "$ref": "#/components/schemas/User"
+        category:
+          "$ref": "#/components/schemas/Category"
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        slug:
+          type: string
+        image:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        courses:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Course"
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        user:
+          "$ref": "#/components/schemas/User"
+        content:
+          type: string
+        post:
+          "$ref": "#/components/schemas/Post"
+        created_at:
+          type: string
+          format: date-time
+    Course:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        slug:
+          type: string
+        image:
+          type: string
+        price:
+          type: number
+          format: double
+        net_price:
+          type: number
+          format: double
+        level:
+          type: integer
+          format: int32
+        status:
+          type: integer
+          format: int32
+        duration:
+          type: integer
+          format: int32
+        rating:
+          type: number
+          format: double
+        published_at:
+          type: string
+          format: date-time
+        requirement:
+          type: string
+        updatedBy:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        sections:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Section"
+        enrollments:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Enrollment"
+        orders:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Orders"
+        author:
+          "$ref": "#/components/schemas/Author"
+        category:
+          "$ref": "#/components/schemas/Category"
+        tags:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Tag"
+        achievements:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Achievement"
+    Enrollment:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        progress:
+          type: number
+          format: double
+        rating:
+          type: number
+          format: double
+        isPublished:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        course:
+          "$ref": "#/components/schemas/Course"
+        user:
+          "$ref": "#/components/schemas/User"
+    GrantedAuthority:
+      type: object
+      properties:
+        authority:
+          type: string
+    Lesson:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: integer
+          format: int32
+        duration:
+          type: integer
+          format: int32
+        ordered:
+          type: integer
+          format: int32
+        updatedBy:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        video:
+          "$ref": "#/components/schemas/Video"
+        section:
+          "$ref": "#/components/schemas/Section"
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        content:
+          type: string
+        userTo:
+          "$ref": "#/components/schemas/User"
+        userFrom:
+          "$ref": "#/components/schemas/User"
+        notificationType:
+          type: string
+          enum:
+            - LIKE
+            - COMMENT
+            - SHARE
+            - NEW_POST
+            - NEW_COURSE
+        created_at:
+          type: string
+          format: date-time
+        read:
+          type: boolean
+        delivered:
+          type: boolean
+    Orders:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        image:
+          type: string
+        description:
+          type: string
+        userDescription:
+          type: string
+        price:
+          type: number
+          format: double
+        net_price:
+          type: number
+          format: double
+        payment:
+          type: string
+          enum:
+            - PAYPAL
+            - MOMO
+        status:
+          type: string
+          enum:
+            - CANCELED
+            - COMPLETED
+            - PENDING
+            - PROCESSING
+        duration:
+          type: integer
+          format: int32
+        transactionId:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        course:
+          "$ref": "#/components/schemas/Course"
+        user:
+          "$ref": "#/components/schemas/User"
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        content:
+          type: string
+        userPost:
+          "$ref": "#/components/schemas/User"
+        likedUsers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/User"
+        comments:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Comment"
+        typeId:
+          type: integer
+          format: int64
+        type:
+          type: string
+          enum:
+            - COURSE
+            - BLOG
+        created_at:
+          type: string
+          format: date-time
+    Section:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        status:
+          type: integer
+          format: int32
+        ordered:
+          type: integer
+          format: int32
+        updatedBy:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        lessons:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Lesson"
+    Tag:
+      x-class-extra-annotation: "@javax.persistence.Entity"
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          x-field-extra-annotation: "@javax.persistence.Id"
+        name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    Token:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        token:
+          type: string
+        token_type:
+          type: string
+          enum:
+            - BEARER_ACCESS_TOKEN
+            - BEARER_REFRESH_TOKEN
+            - VERIFY
+            - RESET_PASSWORD
+        isRevoked:
+          type: boolean
+        isExpired:
+          type: boolean
+        user:
+          "$ref": "#/components/schemas/User"
+        expired:
+          type: boolean
+        revoked:
+          type: boolean
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        first_name:
+          type: string
+        last_name:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        userStatus:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        imageUrl:
+          type: string
+        role:
+          type: string
+          enum:
+            - USER
+            - ADMIN
+            - MANAGER
+            - EMPLOYEE
+        provider:
+          type: string
+          enum:
+            - local
+            - facebook
+            - google
+            - github
+            - linkedin
+        providerId:
+          type: string
+        attributes:
+          type: object
+          additionalProperties:
+            type: object
+        userPermissions:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/UserPermission"
+        enrollments:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Enrollment"
+        tokens:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Token"
+        orders:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Orders"
+        blogs:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Blog"
+        comments:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Comment"
+        notificationsPublish:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Notification"
+        notificationsReceive:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Notification"
+        postsOfUser:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Post"
+        posts:
+          uniqueItems: true
+          type: array
+          items:
+            "$ref": "#/components/schemas/Post"
+        verified:
+          type: boolean
+        enabled:
+          type: boolean
+        notify:
+          type: boolean
+        authorities:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GrantedAuthority"
+        username:
+          type: string
+        accountNonLocked:
+          type: boolean
+        accountNonExpired:
+          type: boolean
+        credentialsNonExpired:
+          type: boolean
+    UserPermission:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        user:
+          "$ref": "#/components/schemas/User"
+        permission:
+          "$ref": "#/components/schemas/Permissions"
+        username:
+          type: string
+        permissionName:
+          type: string
+    Video:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        url:
+          type: string
+        captionUrls:
+          type: string
+        status:
+          type: integer
+          format: int32
+        duration:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        lesson:
+          "$ref": "#/components/schemas/Lesson"
+    QuestionDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+        updatedBy:
+          type: string
+        point:
+          type: number
+          format: double
+        partId:
+          type: integer
+          format: int64
+        fullAnswer:
+          type: boolean
+    InvoiceDto:
+      type: object
+      properties:
+        transactionId:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        userName:
+          type: string
+        courseName:
+          type: string
+        price:
+          type: number
+          format: double
+        net_price:
+          type: number
+          format: double
+    OrderHistoryRequestDto:
+      type: object
+      properties:
+        pageNo:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        userId:
+          type: integer
+          format: int64
+    OrderDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userName:
+          type: string
+        courseName:
+          type: string
+        description:
+          type: string
+        transactionId:
+          type: string
+        userDescription:
+          type: string
+        slug:
+          type: string
+        duration:
+          type: integer
+          format: int32
+        image:
+          type: string
+        price:
+          type: number
+          format: double
+        net_price:
+          type: number
+          format: double
+        payment:
+          type: string
+          enum:
+            - PAYPAL
+            - MOMO
+        status:
+          type: string
+          enum:
+            - CANCELED
+            - COMPLETED
+            - PENDING
+            - PROCESSING
+        created_at:
+          type: string
+          format: date-time
+    PageOrderDto:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            "$ref": "#/components/schemas/OrderDto"
+        number:
+          type: integer
+          format: int32
+        sort:
+          "$ref": "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        last:
+          type: boolean
+        first:
+          type: boolean
+        pageable:
+          "$ref": "#/components/schemas/PageableObject"
+        empty:
+          type: boolean
+    PageableObject:
+      type: object
+      properties:
+        offset:
+          type: integer
+          format: int64
+        sort:
+          "$ref": "#/components/schemas/SortObject"
+        paged:
+          type: boolean
+        unpaged:
+          type: boolean
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+    SortObject:
+      type: object
+      properties:
+        empty:
+          type: boolean
+        unsorted:
+          type: boolean
+        sorted:
+          type: boolean
+    SearchDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
+        type:
+          type: string
+          enum:
+            - AUTHOR
+            - BLOG
+            - COURSE
+    ExamResultDto:
+      type: object
+      properties:
+        partId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        courseId:
+          type: integer
+          format: int64
+    RetakeExamDto:
+      type: object
+      properties:
+        examSession:
+          type: integer
+          format: int32
+        correctAnswer:
+          type: string
+        totalExamTime:
+          type: integer
+          format: int32
+        totalPoint:
+          type: number
+          format: double
+        grade:
+          type: string
+          enum:
+            - FAIL
+            - AVERAGE
+            - GOOD
+            - EXCELLENT
+        created_at:
+          type: string
+          format: date-time
+        passed:
+          type: boolean
+    AnswerDetailDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        answerId:
+          type: integer
+          format: int64
+        userAnswerId:
+          type: integer
+          format: int64
+        correct:
+          type: boolean
+        description:
+          type: string
+        partId:
+          type: integer
+          format: int64
+        point:
+          type: number
+          format: double
+    FinishExamRequestDto:
+      type: object
+      properties:
+        answers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AnswerDetailDto"
+        courseId:
+          type: integer
+          format: int64
+        examSession:
+          type: integer
+          format: int32
+        totalExamTime:
+          type: integer
+          format: int32
+        userId:
+          type: integer
+          format: int64
+    FinishExamResponseDto:
+      type: object
+      properties:
+        totalExamTime:
+          type: integer
+          format: int32
+        totalPoint:
+          type: number
+          format: double
+        grade:
+          type: string
+          enum:
+            - FAIL
+            - AVERAGE
+            - GOOD
+            - EXCELLENT
+        correctAnswer:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    CertificateDto:
+      type: object
+      properties:
+        fullName:
+          type: string
+        courseName:
+          type: string
+        grade:
+          type: string
+        completedDate:
+          type: string
+          format: date-time
+    AccomplishmentsDto:
+      type: object
+      properties:
+        courseId:
+          type: integer
+          format: int64
+        courseName:
+          type: string
+        courseImage:
+          type: string
+        courseSlug:
+          type: string
+        categoryName:
+          type: string
+        categorySlug:
+          type: string
+        courseDuration:
+          type: integer
+          format: int32
+        courseRating:
+          type: number
+          format: double
+        courseTotalEnroll:
+          type: integer
+          format: int32
+        grade:
+          type: string
+          enum:
+            - FAIL
+            - AVERAGE
+            - GOOD
+            - EXCELLENT
+        certificateUID:
+          type: string
+        examSession:
+          type: integer
+          format: int32
+        created_at:
+          type: string
+          format: date-time
+    EnrollmentDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        progress:
+          type: number
+          format: double
+        comment:
+          type: string
+        rating:
+          type: number
+          format: double
+        user_id:
+          type: integer
+          format: int64
+        course_id:
+          type: integer
+          format: int64
+    PartDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        courseId:
+          type: integer
+          format: int64
+        maxPoint:
+          type: number
+          format: double
+        limitTime:
+          type: integer
+          format: int32
+        updatedBy:
+          type: string
+        status:
+          type: integer
+          format: int32
+    CourseRelatedDto:
+      type: object
+      properties:
+        categoryId:
+          type: integer
+          format: int64
+        tagName:
+          type: string
+    CourseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        slug:
+          type: string
+        image:
+          type: string
+        progress:
+          type: integer
+          format: int64
+        requirement:
+          type: string
+        updatedBy:
+          type: string
+        rating:
+          type: number
+          format: double
+        price:
+          type: number
+          format: double
+        enrollmentCount:
+          type: integer
+          format: int32
+        level:
+          type: integer
+          format: int32
+        status:
+          type: integer
+          format: int32
+        published_at:
+          type: string
+          format: date-time
+        net_price:
+          type: number
+          format: double
+        duration:
+          type: integer
+          format: int32
+        sections:
+          type: array
+          items:
+            type: string
+        category_name:
+          type: string
+        author_name:
+          type: string
+        author_image:
+          type: string
+        category_id:
+          type: integer
+          format: int64
+        author_id:
+          type: integer
+          format: int64
+        tags:
+          type: string
+        achievements:
+          type: string
+    CheckoutDto:
+      type: object
+      properties:
+        amount:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        courseId:
+          type: integer
+          format: int64
+        paymentType:
+          type: string
+          enum:
+            - PAYPAL
+            - MOMO
+        userDescription:
+          type: string
+    PaypalRequestDto:
+      type: object
+      properties:
+        price:
+          type: number
+          format: double
+        currency:
+          type: string
+        method:
+          type: string
+          enum:
+            - paypal
+            - credit_card
+        intent:
+          type: string
+          enum:
+            - sale
+            - authorize
+        description:
+          type: string
+        userDescription:
+          type: string
+        userId:
+          type: integer
+          format: int64
+        courseId:
+          type: integer
+          format: int64
+    PaypalResponseDto:
+      type: object
+      properties:
+        orderId:
+          type: string
+        payUrl:
+          type: string
+    MomoRequestDto:
+      type: object
+      properties:
+        partnerCode:
+          type: string
+        requestId:
+          type: string
+        orderId:
+          type: string
+        lang:
+          type: string
+        orderInfo:
+          type: string
+        startTime:
+          type: integer
+          format: int64
+        amount:
+          type: integer
+          format: int64
+        partnerName:
+          type: string
+        subPartnerCode:
+          type: string
+        requestType:
+          type: string
+        redirectUrl:
+          type: string
+        ipnUrl:
+          type: string
+        storeId:
+          type: string
+        extraData:
+          type: string
+        partnerClientId:
+          type: string
+        autoCapture:
+          type: boolean
+        orderGroupId:
+          type: integer
+          format: int64
+        signature:
+          type: string
+        userId:
+          type: integer
+          format: int64
+        courseId:
+          type: integer
+          format: int64
+        userDescription:
+          type: string
+    MomoResponseDto:
+      type: object
+      properties:
+        responseTime:
+          type: integer
+          format: int64
+        message:
+          type: string
+        partnerCode:
+          type: string
+        orderId:
+          type: string
+        resultCode:
+          type: integer
+          format: int32
+        requestId:
+          type: string
+        amount:
+          type: integer
+          format: int64
+        payUrl:
+          type: string
+        shortLink:
+          type: string
+        deeplink:
+          type: string
+        qrCodeUrl:
+          type: string
+        deeplinkWebInApp:
+          type: string
+        transId:
+          type: integer
+          format: int64
+        applink:
+          type: string
+        partnerClientId:
+          type: string
+        bindingUrl:
+          type: string
+        deeplinkMiniApp:
+          type: string
+    CategoryDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    AuthorDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        image:
+          type: string
+        title:
+          type: string
+        information:
+          type: string
+        updatedBy:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    AuthorRequestDto:
+      type: object
+      properties:
+        categoryId:
+          type: integer
+          format: int64
+        pageNo:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        searchKey:
+          type: string
+        searchValue:
+          type: string
+        sortKey:
+          type: string
+        operation:
+          type: string
+    PageAuthorDto:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AuthorDto"
+        number:
+          type: integer
+          format: int32
+        sort:
+          "$ref": "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        last:
+          type: boolean
+        first:
+          type: boolean
+        pageable:
+          "$ref": "#/components/schemas/PageableObject"
+        empty:
+          type: boolean
+    RegisterRequestDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        imageUrl:
+          type: string
+        role:
+          type: string
+          enum:
+            - USER
+            - ADMIN
+            - MANAGER
+            - EMPLOYEE
+        isVerified:
+          type: boolean
+    AuthenticationRequestDto:
+      type: object
+      properties:
+        email:
+          type: string
+        oldPassword:
+          type: string
+        password:
+          type: string
+        confirmPassword:
+          type: string
+    AuthenticationResponseDto:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - success
+            - error
+            - warning
+        message:
+          type: string
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+    NotificationDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        content:
+          type: string
+        userTo:
+          "$ref": "#/components/schemas/UserDto"
+        userFrom:
+          "$ref": "#/components/schemas/UserDto"
+        notificationType:
+          type: string
+          enum:
+            - LIKE
+            - COMMENT
+            - SHARE
+            - NEW_POST
+            - NEW_COURSE
+        created_at:
+          type: string
+          format: date-time
+        read:
+          type: boolean
+        delivered:
+          type: boolean
+    StreamingResponseBody:
+      type: object
+    LearningDto:
+      type: object
+      properties:
+        sectionDto:
+          type: array
+          items:
+            "$ref": "#/components/schemas/SectionDto"
+        lessonDto:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LessonDto"
+        videoDto:
+          type: array
+          items:
+            "$ref": "#/components/schemas/VideoDto"
+    VideoDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        url:
+          type: string
+        captionUrls:
+          type: array
+          items:
+            type: string
+        captionData:
+          type: object
+          additionalProperties:
+            type: string
+        status:
+          type: integer
+          format: int32
+        lessonId:
+          type: integer
+          format: int64
+    ServerSentEventListNotificationDto:
+      type: object
+    ServerSentEventListPostDto:
+      type: object
+    RevenueYearDto:
+      type: object
+      properties:
+        month:
+          type: integer
+          format: int32
+        year:
+          type: integer
+          format: int32
+        revenue:
+          type: number
+          format: double
+    SummaryDashboardDto:
+      type: object
+      properties:
+        totalUser:
+          type: integer
+          format: int32
+        todayRegister:
+          type: integer
+          format: int32
+        yearRevenue:
+          type: number
+          format: double
+        monthRevenue:
+          type: number
+          format: double
+    CategoryEnrollmentDto:
+      type: object
+      properties:
+        percent:
+          type: number
+          format: double
+        name:
+          type: string
+    RatingStarsInterface:
+      type: object
+      properties:
+        ratio:
+          type: number
+          format: double
+        star:
+          type: integer
+          format: int32
+    CourseInterface:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: integer
+          format: int64
+        comment:
+          type: string
+        level:
+          type: integer
+          format: int32
+        enrollmentCount:
+          type: integer
+          format: int32
+        price:
+          type: number
+          format: double
+        net_price:
+          type: number
+          format: double
+        slug:
+          type: string
+        requirement:
+          type: string
+        rating:
+          type: number
+          format: double
+        duration:
+          type: string
+        achievements:
+          type: string
+        image:
+          type: string
+        tags:
+          type: string
+        status:
+          type: integer
+          format: int32
+        progress:
+          type: integer
+          format: int64
+        category_id:
+          type: integer
+          format: int64
+        author_id:
+          type: integer
+          format: int64
+        category_image:
+          type: string
+        author_image:
+          type: string
+        category_slug:
+          type: string
+        userRating:
+          type: number
+          format: double
+        author_name:
+          type: string
+        updated_by:
+          type: string
+        description:
+          type: string
+        category_description:
+          type: string
+        category_name:
+          type: string
+    ApplicationContext:
+      type: object
+      properties:
+        parent:
+          "$ref": "#/components/schemas/ApplicationContext"
+        id:
+          type: string
+        displayName:
+          type: string
+        startupDate:
+          type: integer
+          format: int64
+        applicationName:
+          type: string
+        autowireCapableBeanFactory:
+          "$ref": "#/components/schemas/AutowireCapableBeanFactory"
+        environment:
+          "$ref": "#/components/schemas/Environment"
+        beanDefinitionNames:
+          type: array
+          items:
+            type: string
+        beanDefinitionCount:
+          type: integer
+          format: int32
+        parentBeanFactory:
+          "$ref": "#/components/schemas/BeanFactory"
+        classLoader:
+          type: object
+          properties:
+            name:
+              type: string
+            registeredAsParallelCapable:
+              type: boolean
+            parent:
+              type: object
+              properties:
+                name:
+                  type: string
+                registeredAsParallelCapable:
+                  type: boolean
+                unnamedModule:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    classLoader:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        registeredAsParallelCapable:
+                          type: boolean
+                        definedPackages:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              annotations:
+                                type: array
+                                items:
+                                  type: object
+                              declaredAnnotations:
+                                type: array
+                                items:
+                                  type: object
+                              sealed:
+                                type: boolean
+                              specificationTitle:
+                                type: string
+                              specificationVersion:
+                                type: string
+                              specificationVendor:
+                                type: string
+                              implementationTitle:
+                                type: string
+                              implementationVersion:
+                                type: string
+                              implementationVendor:
+                                type: string
+                        defaultAssertionStatus:
+                          type: boolean
+                          writeOnly: true
+                    descriptor:
+                      type: object
+                      properties:
+                        open:
+                          type: boolean
+                        automatic:
+                          type: boolean
+                    named:
+                      type: boolean
+                    annotations:
+                      type: array
+                      items:
+                        type: object
+                    declaredAnnotations:
+                      type: array
+                      items:
+                        type: object
+                    packages:
+                      uniqueItems: true
+                      type: array
+                      items:
+                        type: string
+                    layer:
+                      type: object
+                definedPackages:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      annotations:
+                        type: array
+                        items:
+                          type: object
+                      declaredAnnotations:
+                        type: array
+                        items:
+                          type: object
+                      sealed:
+                        type: boolean
+                      specificationTitle:
+                        type: string
+                      specificationVersion:
+                        type: string
+                      specificationVendor:
+                        type: string
+                      implementationTitle:
+                        type: string
+                      implementationVersion:
+                        type: string
+                      implementationVendor:
+                        type: string
+                defaultAssertionStatus:
+                  type: boolean
+                  writeOnly: true
+            unnamedModule:
+              type: object
+              properties:
+                name:
+                  type: string
+                classLoader:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    registeredAsParallelCapable:
+                      type: boolean
+                    definedPackages:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          annotations:
+                            type: array
+                            items:
+                              type: object
+                          declaredAnnotations:
+                            type: array
+                            items:
+                              type: object
+                          sealed:
+                            type: boolean
+                          specificationTitle:
+                            type: string
+                          specificationVersion:
+                            type: string
+                          specificationVendor:
+                            type: string
+                          implementationTitle:
+                            type: string
+                          implementationVersion:
+                            type: string
+                          implementationVendor:
+                            type: string
+                    defaultAssertionStatus:
+                      type: boolean
+                      writeOnly: true
+                descriptor:
+                  type: object
+                  properties:
+                    open:
+                      type: boolean
+                    automatic:
+                      type: boolean
+                named:
+                  type: boolean
+                annotations:
+                  type: array
+                  items:
+                    type: object
+                declaredAnnotations:
+                  type: array
+                  items:
+                    type: object
+                packages:
+                  uniqueItems: true
+                  type: array
+                  items:
+                    type: string
+                layer:
+                  type: object
+            definedPackages:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  annotations:
+                    type: array
+                    items:
+                      type: object
+                  declaredAnnotations:
+                    type: array
+                    items:
+                      type: object
+                  sealed:
+                    type: boolean
+                  specificationTitle:
+                    type: string
+                  specificationVersion:
+                    type: string
+                  specificationVendor:
+                    type: string
+                  implementationTitle:
+                    type: string
+                  implementationVersion:
+                    type: string
+                  implementationVendor:
+                    type: string
+            defaultAssertionStatus:
+              type: boolean
+              writeOnly: true
+    AutowireCapableBeanFactory:
+      type: object
+    BeanFactory:
+      type: object
+    Environment:
+      type: object
+      properties:
+        activeProfiles:
+          type: array
+          items:
+            type: string
+        defaultProfiles:
+          type: array
+          items:
+            type: string
+    FilterRegistration:
+      type: object
+      properties:
+        servletNameMappings:
+          type: array
+          items:
+            type: string
+        urlPatternMappings:
+          type: array
+          items:
+            type: string
+        name:
+          type: string
+        className:
+          type: string
+        initParameters:
+          type: object
+          additionalProperties:
+            type: string
+    HttpStatusCode:
+      type: object
+      properties:
+        error:
+          type: boolean
+        is4xxClientError:
+          type: boolean
+        is5xxServerError:
+          type: boolean
+        is2xxSuccessful:
+          type: boolean
+        is3xxRedirection:
+          type: boolean
+        is1xxInformational:
+          type: boolean
+    JspConfigDescriptor:
+      type: object
+      properties:
+        taglibs:
+          type: array
+          items:
+            "$ref": "#/components/schemas/TaglibDescriptor"
+        jspPropertyGroups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/JspPropertyGroupDescriptor"
+    JspPropertyGroupDescriptor:
+      type: object
+      properties:
+        buffer:
+          type: string
+        urlPatterns:
+          type: array
+          items:
+            type: string
+        defaultContentType:
+          type: string
+        deferredSyntaxAllowedAsLiteral:
+          type: string
+        errorOnUndeclaredNamespace:
+          type: string
+        errorOnELNotFound:
+          type: string
+        scriptingInvalid:
+          type: string
+        trimDirectiveWhitespaces:
+          type: string
+        pageEncoding:
+          type: string
+        elIgnored:
+          type: string
+        includePreludes:
+          type: array
+          items:
+            type: string
+        isXml:
+          type: string
+        includeCodas:
+          type: array
+          items:
+            type: string
+    RedirectView:
+      type: object
+      properties:
+        applicationContext:
+          "$ref": "#/components/schemas/ApplicationContext"
+        servletContext:
+          "$ref": "#/components/schemas/ServletContext"
+        contentType:
+          type: string
+        requestContextAttribute:
+          type: string
+        staticAttributes:
+          type: object
+          additionalProperties:
+            type: object
+        exposePathVariables:
+          type: boolean
+        exposeContextBeansAsAttributes:
+          type: boolean
+          writeOnly: true
+        exposedContextBeanNames:
+          type: array
+          writeOnly: true
+          items:
+            type: string
+        beanName:
+          type: string
+        url:
+          type: string
+        contextRelative:
+          type: boolean
+          writeOnly: true
+        http10Compatible:
+          type: boolean
+          writeOnly: true
+        exposeModelAttributes:
+          type: boolean
+          writeOnly: true
+        encodingScheme:
+          type: string
+          writeOnly: true
+        statusCode:
+          "$ref": "#/components/schemas/HttpStatusCode"
+        expandUriTemplateVariables:
+          type: boolean
+          writeOnly: true
+        propagateQueryParams:
+          type: boolean
+          writeOnly: true
+        hosts:
+          type: array
+          items:
+            type: string
+        redirectView:
+          type: boolean
+        propagateQueryProperties:
+          type: boolean
+        attributesMap:
+          type: object
+          additionalProperties:
+            type: object
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+          writeOnly: true
+        attributesCSV:
+          type: string
+          writeOnly: true
+    ServletContext:
+      type: object
+      properties:
+        classLoader:
+          type: object
+          properties:
+            name:
+              type: string
+            registeredAsParallelCapable:
+              type: boolean
+            definedPackages:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  annotations:
+                    type: array
+                    items:
+                      type: object
+                  declaredAnnotations:
+                    type: array
+                    items:
+                      type: object
+                  sealed:
+                    type: boolean
+                  specificationTitle:
+                    type: string
+                  specificationVersion:
+                    type: string
+                  specificationVendor:
+                    type: string
+                  implementationTitle:
+                    type: string
+                  implementationVersion:
+                    type: string
+                  implementationVendor:
+                    type: string
+            defaultAssertionStatus:
+              type: boolean
+              writeOnly: true
+        minorVersion:
+          type: integer
+          format: int32
+        majorVersion:
+          type: integer
+          format: int32
+        sessionTimeout:
+          type: integer
+          format: int32
+        sessionTrackingModes:
+          uniqueItems: true
+          type: array
+          writeOnly: true
+          items:
+            type: string
+            enum:
+              - COOKIE
+              - URL
+              - SSL
+        attributeNames:
+          type: object
+        initParameterNames:
+          type: object
+        sessionCookieConfig:
+          "$ref": "#/components/schemas/SessionCookieConfig"
+        effectiveMinorVersion:
+          type: integer
+          format: int32
+        servletRegistrations:
+          type: object
+          additionalProperties:
+            "$ref": "#/components/schemas/ServletRegistration"
+        requestCharacterEncoding:
+          type: string
+        jspConfigDescriptor:
+          "$ref": "#/components/schemas/JspConfigDescriptor"
+        effectiveSessionTrackingModes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+              - COOKIE
+              - URL
+              - SSL
+        responseCharacterEncoding:
+          type: string
+        filterRegistrations:
+          type: object
+          additionalProperties:
+            "$ref": "#/components/schemas/FilterRegistration"
+        servletContextName:
+          type: string
+        effectiveMajorVersion:
+          type: integer
+          format: int32
+        defaultSessionTrackingModes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+              - COOKIE
+              - URL
+              - SSL
+        virtualServerName:
+          type: string
+        contextPath:
+          type: string
+        serverInfo:
+          type: string
+    ServletRegistration:
+      type: object
+      properties:
+        mappings:
+          type: array
+          items:
+            type: string
+        runAsRole:
+          type: string
+        name:
+          type: string
+        className:
+          type: string
+        initParameters:
+          type: object
+          additionalProperties:
+            type: string
+    SessionCookieConfig:
+      type: object
+      properties:
+        name:
+          type: string
+        path:
+          type: string
+        attributes:
+          type: object
+          additionalProperties:
+            type: string
+        comment:
+          type: string
+          deprecated: true
+        maxAge:
+          type: integer
+          format: int32
+        domain:
+          type: string
+        secure:
+          type: boolean
+        httpOnly:
+          type: boolean
+    TaglibDescriptor:
+      type: object
+      properties:
+        taglibLocation:
+          type: string
+        taglibURI:
+          type: string
+    BlogsInterface:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: integer
+          format: int64
+        user_id:
+          type: integer
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        view_count:
+          type: integer
+          format: int32
+        image:
+          type: string
+        status:
+          type: integer
+          format: int32
+        category_id:
+          type: integer
+          format: int64
+        description:
+          type: string
+        category_name:
+          type: string
+        createdBy:
+          type: string
+    AuthorInterface:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: integer
+          format: int64
+        enrollmentCount:
+          type: integer
+          format: int32
+        information:
+          type: string
+        image:
+          type: string
+        title:
+          type: string
+    ServerSentEventUserDto:
+      type: object
+  securitySchemes:
+    bearerAuth:
+      type: http
+      description: JWT Nguyen Test
+      scheme: bearer
+      bearerFormat: JWT
