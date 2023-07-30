@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Component;
 
 import com.swaggercodegen.swaggercodegenapp.mapper.TagMapper;
+import com.swaggercodegen.swaggercodegenapp.model.BaseResponseDto;
 import com.swaggercodegen.swaggercodegenapp.model.TagDto;
 
 @Component
@@ -23,14 +24,12 @@ public class SPTag {
     JdbcTemplate jdbcTemplate;
 
     public SPTag(JdbcTemplate jdbcTemplate) {
-
         // this.jdbcTemplate = jdbcTemplate;
         this.simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate);
 
     }
 
     public List<TagDto> getAllTags() {
-        simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate);
         simpleJdbcCall.withProcedureName("sp_CRUD_tag").declareParameters(
                 new SqlParameter("id", Types.BIGINT),
                 new SqlParameter("name", Types.VARCHAR),
@@ -47,10 +46,9 @@ public class SPTag {
         return dtos;
     }
 
-    public void insertTag(TagDto tagDto) {
-        simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate);
+    public BaseResponseDto insertTag(TagDto tagDto) {
         simpleJdbcCall.withProcedureName("sp_CRUD_tag").declareParameters(
-                new SqlParameter("id", Types.INTEGER),
+                new SqlParameter("id", Types.BIGINT),
                 new SqlParameter("name", Types.VARCHAR),
                 new SqlParameter("action", Types.VARCHAR));
 
@@ -59,11 +57,17 @@ public class SPTag {
         parameterSource.addValue("name", tagDto.getName());
         parameterSource.addValue("action", "INSERT");
 
-        simpleJdbcCall.execute(parameterSource);
+        Map<String, Object> result = simpleJdbcCall.execute(parameterSource);
+
+        BaseResponseDto dto = BaseResponseDto.builder()
+                .statusCode((Integer) result.get("statusCode"))
+                .message(result.get("message").toString())
+                .build();
+
+        return dto;
     }
 
-    public void updateTag(TagDto tagDto) {
-        simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate);
+    public BaseResponseDto updateTag(TagDto tagDto) {
         simpleJdbcCall.withProcedureName("sp_CRUD_tag").declareParameters(
                 new SqlParameter("id", Types.BIGINT),
                 new SqlParameter("name", Types.VARCHAR),
@@ -74,11 +78,17 @@ public class SPTag {
         parameterSource.addValue("name", tagDto.getName());
         parameterSource.addValue("action", "UPDATE");
 
-        simpleJdbcCall.execute(parameterSource);
+        Map<String, Object> result = simpleJdbcCall.execute(parameterSource);
+
+        BaseResponseDto dto = BaseResponseDto.builder()
+                .statusCode((Integer) result.get("statusCode"))
+                .message(result.get("message").toString())
+                .build();
+
+        return dto;
     }
 
-    public void deleteTag(long tagId) {
-        simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate);
+    public BaseResponseDto deleteTag(long tagId) {
         simpleJdbcCall.withProcedureName("sp_CRUD_tag").declareParameters(
                 new SqlParameter("id", Types.BIGINT),
                 new SqlParameter("name", Types.VARCHAR),
@@ -88,7 +98,14 @@ public class SPTag {
         parameterSource.addValue("id", tagId);
         parameterSource.addValue("action", "DELETE");
 
-        simpleJdbcCall.execute(parameterSource);
+        Map<String, Object> result = simpleJdbcCall.execute(parameterSource);
+
+        BaseResponseDto dto = BaseResponseDto.builder()
+                .statusCode((Integer) result.get("statusCode"))
+                .message(result.get("message").toString())
+                .build();
+
+        return dto;
     }
 
 }

@@ -171,6 +171,7 @@ paths:
           description: Categoty ID
           schema:
             type: integer
+            format: int64
       responses:
         "200":
           description: OK
@@ -1749,9 +1750,9 @@ components:
           format: int64
         name:
           type: string
-        slug:
-          type: string
         description:
+          type: string
+        slug:
           type: string
         image:
           type: string
@@ -1761,6 +1762,14 @@ components:
         updated_at:
           type: string
           format: date-time
+    BaseResponseDto:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+        message:
+          type: string
     AuthorDto:
       type: object
       properties:

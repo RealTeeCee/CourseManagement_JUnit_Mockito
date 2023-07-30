@@ -17,8 +17,8 @@
 	<properties>
 		<java.version>11</java.version>
 		<yaml.file>${project.basedir}/src/main/resources/template/swagger-input.yml</yaml.file>
-		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
-		<generated-sources-java-path>src/main/java</generated-sources-java-path>
+		<!-- <generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
+		<generated-sources-java-path>src/main/java</generated-sources-java-path> -->
 	</properties>
 	<dependencies>
 		<dependency>
@@ -54,6 +54,15 @@
 			<artifactId>mssql-jdbc</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+		<!-- <dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.6.0</version>
+		</dependency> -->
+
+
 		<!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
 		<dependency>
 			<groupId>io.swagger.core.v3</groupId>

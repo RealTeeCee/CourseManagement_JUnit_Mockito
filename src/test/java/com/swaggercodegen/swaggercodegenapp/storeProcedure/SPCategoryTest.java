@@ -28,6 +28,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.swaggercodegen.swaggercodegenapp.mapper.CategoryMapper;
+import com.swaggercodegen.swaggercodegenapp.model.BaseResponseDto;
 import com.swaggercodegen.swaggercodegenapp.model.CategoryDto;
 
 public class SPCategoryTest {
@@ -48,15 +49,59 @@ public class SPCategoryTest {
                 ReflectionTestUtils.setField(spCategory, "simpleJdbcCall", simpleJdbcCall);
 
                 // when(dataSource.getConnection()).thenReturn(mock(Connection.class));
-
                 // // when(jdbcTemplate.setDataSource(dataSource)).thenReturn(dataSource);
                 // doNothing().when(jdbcTemplate).setDataSource(dataSource);
-
         }
 
         @Test
+        @SuppressWarnings("unchecked")
         void testDeleteCategory() {
+                long categoryId = 1;
+                BaseResponseDto expectedResponse = BaseResponseDto.builder()
+                                .statusCode(200)
+                                .message("Success")
+                                .build();
 
+                Map<String, Object> result = new HashMap<>();
+                result.put("statusCode", expectedResponse.getStatusCode());
+                result.put("message", expectedResponse.getMessage());
+                // Mock the behavior of JdbcTemplate and SimpleJdbcCall
+                when(jdbcTemplate.call((CallableStatementCreator) any(SimpleJdbcCall.class),
+                                (List<SqlParameter>) any(MapSqlParameterSource.class))).thenReturn(result);
+                when(simpleJdbcCall.withProcedureName(anyString())).thenReturn(simpleJdbcCall);
+                when(simpleJdbcCall.declareParameters(
+                                any(SqlParameter.class))).thenReturn(simpleJdbcCall);
+                when(simpleJdbcCall.execute(any(MapSqlParameterSource.class)))
+                                .thenReturn(result);
+
+                // Act
+                BaseResponseDto actualResponse = spCategory.deleteCategory(categoryId);
+
+                // Assert
+                verify(simpleJdbcCall).withProcedureName("sp_CRUD_category");
+
+                ArgumentCaptor<SqlParameter> captor = ArgumentCaptor.forClass(SqlParameter.class);
+                verify(simpleJdbcCall).declareParameters(captor.capture());
+                List<SqlParameter> actualParams = captor.getAllValues();
+
+                assertEquals(6, actualParams.size());
+                assertEquals("id", actualParams.get(0).getName());
+                assertEquals(Types.BIGINT, actualParams.get(0).getSqlType());
+                assertEquals("name", actualParams.get(1).getName());
+                assertEquals(Types.VARCHAR, actualParams.get(1).getSqlType());
+                assertEquals("description", actualParams.get(2).getName());
+                assertEquals(Types.VARCHAR, actualParams.get(2).getSqlType());
+                assertEquals("slug", actualParams.get(3).getName());
+                assertEquals(Types.VARCHAR, actualParams.get(3).getSqlType());
+                assertEquals("image", actualParams.get(4).getName());
+                assertEquals(Types.VARCHAR, actualParams.get(4).getSqlType());
+                assertEquals("action", actualParams.get(5).getName());
+                assertEquals(Types.VARCHAR, actualParams.get(5).getSqlType());
+                // verify(simpleJdbcCall).returningResultSet("rsGetAllCategories", new
+                // CategoryMapper());
+                verify(simpleJdbcCall).execute(ArgumentMatchers.any(MapSqlParameterSource.class));
+
+                assertEquals(expectedResponse, actualResponse);
         }
 
         @Test
@@ -118,12 +163,108 @@ public class SPCategoryTest {
         }
 
         @Test
+        @SuppressWarnings("unchecked")
         void testInsertCategory() {
+                CategoryDto categoryDto = new CategoryDto(1L, "Category 1", "Description 1", "slug-1", "image-1", null,
+                                null);
+                BaseResponseDto expectedResponse = BaseResponseDto.builder()
+                                .statusCode(200)
+                                .message("Success")
+                                .build();
 
+                Map<String, Object> result = new HashMap<>();
+                result.put("statusCode", expectedResponse.getStatusCode());
+                result.put("message", expectedResponse.getMessage());
+                // Mock the behavior of JdbcTemplate and SimpleJdbcCall
+                when(jdbcTemplate.call((CallableStatementCreator) any(SimpleJdbcCall.class),
+                                (List<SqlParameter>) any(MapSqlParameterSource.class))).thenReturn(result);
+                when(simpleJdbcCall.withProcedureName(anyString())).thenReturn(simpleJdbcCall);
+                when(simpleJdbcCall.declareParameters(
+                                any(SqlParameter.class))).thenReturn(simpleJdbcCall);
+
+                when(simpleJdbcCall.execute(any(MapSqlParameterSource.class)))
+                                .thenReturn(result);
+
+                // Act
+                BaseResponseDto actualResponse = spCategory.insertCategory(categoryDto);
+
+                // Assert
+                verify(simpleJdbcCall).withProcedureName("sp_CRUD_category");
+
+                ArgumentCaptor<SqlParameter> captor = ArgumentCaptor.forClass(SqlParameter.class);
+                verify(simpleJdbcCall).declareParameters(captor.capture());
+                List<SqlParameter> actualParams = captor.getAllValues();
+
+                assertEquals(6, actualParams.size());
+                assertEquals("id", actualParams.get(0).getName());
+                assertEquals(Types.BIGINT, actualParams.get(0).getSqlType());
+                assertEquals("name", actualParams.get(1).getName());
+                assertEquals(Types.VARCHAR, actualParams.get(1).getSqlType());
+                assertEquals("description", actualParams.get(2).getName());
+                assertEquals(Types.VARCHAR, actualParams.get(2).getSqlType());
+                assertEquals("slug", actualParams.get(3).getName());
+                assertEquals(Types.VARCHAR, actualParams.get(3).getSqlType());
+                assertEquals("image", actualParams.get(4).getName());
+                assertEquals(Types.VARCHAR, actualParams.get(4).getSqlType());
+                assertEquals("action", actualParams.get(5).getName());
+                assertEquals(Types.VARCHAR, actualParams.get(5).getSqlType());
+                // verify(simpleJdbcCall).returningResultSet("rsGetAllCategories", new
+                // CategoryMapper());
+                verify(simpleJdbcCall).execute(ArgumentMatchers.any(MapSqlParameterSource.class));
+
+                assertEquals(expectedResponse, actualResponse);
         }
 
         @Test
+        @SuppressWarnings("unchecked")
         void testUpdateCategory() {
+                CategoryDto categoryDto = new CategoryDto(1L, "Category 1", "Description 1", "slug-1", "image-1", null,
+                                null);
+                BaseResponseDto expectedResponse = BaseResponseDto.builder()
+                                .statusCode(200)
+                                .message("Success")
+                                .build();
 
+                Map<String, Object> result = new HashMap<>();
+                result.put("statusCode", expectedResponse.getStatusCode());
+                result.put("message", expectedResponse.getMessage());
+                // Mock the behavior of JdbcTemplate and SimpleJdbcCall
+                when(jdbcTemplate.call((CallableStatementCreator) any(SimpleJdbcCall.class),
+                                (List<SqlParameter>) any(MapSqlParameterSource.class))).thenReturn(result);
+                when(simpleJdbcCall.withProcedureName(anyString())).thenReturn(simpleJdbcCall);
+                when(simpleJdbcCall.declareParameters(
+                                any(SqlParameter.class))).thenReturn(simpleJdbcCall);
+
+                when(simpleJdbcCall.execute(any(MapSqlParameterSource.class)))
+                                .thenReturn(result);
+
+                // Act
+                BaseResponseDto actualResponse = spCategory.updateCategory(categoryDto);
+
+                // Assert
+                verify(simpleJdbcCall).withProcedureName("sp_CRUD_category");
+
+                ArgumentCaptor<SqlParameter> captor = ArgumentCaptor.forClass(SqlParameter.class);
+                verify(simpleJdbcCall).declareParameters(captor.capture());
+                List<SqlParameter> actualParams = captor.getAllValues();
+
+                assertEquals(6, actualParams.size());
+                assertEquals("id", actualParams.get(0).getName());
+                assertEquals(Types.BIGINT, actualParams.get(0).getSqlType());
+                assertEquals("name", actualParams.get(1).getName());
+                assertEquals(Types.VARCHAR, actualParams.get(1).getSqlType());
+                assertEquals("description", actualParams.get(2).getName());
+                assertEquals(Types.VARCHAR, actualParams.get(2).getSqlType());
+                assertEquals("slug", actualParams.get(3).getName());
+                assertEquals(Types.VARCHAR, actualParams.get(3).getSqlType());
+                assertEquals("image", actualParams.get(4).getName());
+                assertEquals(Types.VARCHAR, actualParams.get(4).getSqlType());
+                assertEquals("action", actualParams.get(5).getName());
+                assertEquals(Types.VARCHAR, actualParams.get(5).getSqlType());
+                // verify(simpleJdbcCall).returningResultSet("rsGetAllCategories", new
+                // CategoryMapper());
+                verify(simpleJdbcCall).execute(ArgumentMatchers.any(MapSqlParameterSource.class));
+
+                assertEquals(expectedResponse, actualResponse);
         }
 }

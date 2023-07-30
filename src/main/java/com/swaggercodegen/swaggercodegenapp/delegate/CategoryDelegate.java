@@ -1,5 +1,7 @@
 package com.swaggercodegen.swaggercodegenapp.delegate;
 
+import static com.swaggercodegen.swaggercodegenapp.contants.GlobalStorage.GLOBAL_EXCEPTION;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ServerWebExchange;
@@ -13,7 +15,6 @@ import com.swaggercodegen.swaggercodegenapp.services.CategoryService;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import static com.swaggercodegen.swaggercodegenapp.contants.GlobalStorage.*;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +62,7 @@ public class CategoryDelegate implements CategoryApiDelegate {
     }
 
     @Override
-    public Mono<ResponseEntity<CategoryDto>> getCategoryById(Integer categoryId, ServerWebExchange exchange) {
+    public Mono<ResponseEntity<CategoryDto>> getCategoryById(Long categoryId, ServerWebExchange exchange) {
         try {
             return Mono.just(ResponseEntity.ok(service.findById(categoryId)));
 

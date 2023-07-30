@@ -113,7 +113,6 @@ public class CategoryDelegateTest {
 
         @Test
         void testGetAllCategorys() {
-
                 CategoryDto dto = CategoryDto.builder().id(1L).name("ABC").createdAt(OffsetDateTime.now())
                                 .updatedAt(OffsetDateTime.now())
                                 .build();
@@ -125,7 +124,6 @@ public class CategoryDelegateTest {
                 ResponseEntity<Flux<CategoryDto>> result = allCategorys.block();
                 assertEquals(HttpStatus.OK, result.getStatusCode());
                 assertEquals(dtos.get(0), result.getBody().blockFirst());
-
         }
 
         @Test
@@ -153,5 +151,21 @@ public class CategoryDelegateTest {
                 assertEquals("Update category successfully.", result.getBody().getMessage());
 
                 verify(service, times(1)).update(dto);
+        }
+
+        @Test
+        void testGetCategoryById() {
+                CategoryDto dto = CategoryDto.builder().id(1L).name("ABC").createdAt(OffsetDateTime.now())
+                                .updatedAt(OffsetDateTime.now())
+                                .build();
+
+                when(service.findById(dto.getId())).thenReturn(dto);
+
+                Mono<ResponseEntity<CategoryDto>> category = delegate.getCategoryById(dto.getId(), exchange);
+                ResponseEntity<CategoryDto> result = category.block();
+                assertEquals(HttpStatus.OK, result.getStatusCode());
+                assertEquals(dto, result.getBody());
+
+                verify(service, times(1)).findById(dto.getId());
         }
 }
