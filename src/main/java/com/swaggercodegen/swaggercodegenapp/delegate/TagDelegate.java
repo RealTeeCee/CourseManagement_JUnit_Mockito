@@ -1,5 +1,6 @@
 package com.swaggercodegen.swaggercodegenapp.delegate;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,12 @@ public class TagDelegate implements TagApiDelegate {
     @Override
     public Mono<ResponseEntity<Flux<TagDto>>> getAllTags(ServerWebExchange exchange) {
 
-        return Mono.just(ResponseEntity.ok(Flux.fromIterable(service.findAll())));
+        try {
+            return Mono.just(ResponseEntity.ok(Flux.fromIterable(service.findAll())));
+        } catch (SQLException e) {
+         
+           return Mono.just(ResponseEntity.internalServerError().body(null));
+        }
     }
 
     @Override

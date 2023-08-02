@@ -6,6 +6,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,6 @@ import org.springframework.web.server.ServerWebExchange;
 
 import com.swaggercodegen.swaggercodegenapp.model.BaseDto;
 import com.swaggercodegen.swaggercodegenapp.model.BaseDto.AntTypeEnum;
-import com.swaggercodegen.swaggercodegenapp.model.TagDto.TagDtoBuilder;
 import com.swaggercodegen.swaggercodegenapp.model.TagDto;
 import com.swaggercodegen.swaggercodegenapp.services.TagService;
 
@@ -91,7 +91,7 @@ public class TagDelegateTest {
     }
 
     @Test
-    void testGetAllTags() {
+    void testGetAllTags() throws SQLException {
 
         TagDto dto = TagDto.builder().id(1L).name("ABC").createdAt(OffsetDateTime.now())
                 .updatedAt(OffsetDateTime.now())

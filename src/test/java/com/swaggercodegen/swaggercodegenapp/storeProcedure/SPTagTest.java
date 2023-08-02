@@ -99,7 +99,7 @@ public class SPTagTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    void testGetAllTags() {
+    void testGetAllTags() throws SQLException {
         List<TagDto> expectedTags = Arrays.asList(
                 new TagDto(1L, "Category 1", null, null),
                 new TagDto(2L, "Category 2", null, null));

@@ -2,9 +2,12 @@ package com.swaggercodegen.swaggercodegenapp.services.serviceImpl;
 
 import static com.swaggercodegen.swaggercodegenapp.contants.GlobalStorage.BAD_REQUEST_EXCEPTION;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,7 @@ import com.swaggercodegen.swaggercodegenapp.storeProcedure.SPTag;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class TagServiceImpl implements TagService {
     private final TagRepository tagRepository;
@@ -31,7 +35,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<TagDto> findAll() {
+    public List<TagDto> findAll() throws SQLException {
 
         return spTag.getAllTags();
     }

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlInOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
@@ -17,95 +18,104 @@ import com.swaggercodegen.swaggercodegenapp.model.TagDto;
 
 @Component
 public class SPTag {
-    private SimpleJdbcCall simpleJdbcCall;
-    // private final JdbcTemplate jdbcTemplate;
+        private SimpleJdbcCall simpleJdbcCall;
+        // private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+        @Autowired
+        JdbcTemplate jdbcTemplate;
 
-    public SPTag(JdbcTemplate jdbcTemplate) {
-        // this.jdbcTemplate = jdbcTemplate;
-        this.simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate);
+        public SPTag(JdbcTemplate jdbcTemplate) {
+                // this.jdbcTemplate = jdbcTemplate;
+                this.simpleJdbcCall = new SimpleJdbcCall(jdbcTemplate);
 
-    }
+        }
 
-    public List<TagDto> getAllTags() {
-        simpleJdbcCall.withProcedureName("sp_CRUD_tag").declareParameters(
-                new SqlParameter("id", Types.BIGINT),
-                new SqlParameter("name", Types.VARCHAR),
-                new SqlParameter("action", Types.VARCHAR)).returningResultSet("rsGetAllTags",
-                        new TagMapper());
+        public List<TagDto> getAllTags() {
+                simpleJdbcCall.withSchemaName("cmdb").withProcedureName("sp_CRUD_tag")
 
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("id", null);
-        parameterSource.addValue("name", null);
-        parameterSource.addValue("action", null);
-        Map<String, Object> result = simpleJdbcCall.execute(parameterSource);
-        @SuppressWarnings("unchecked")
-        List<TagDto> dtos = (List<TagDto>) result.get("rsGetAllTags");
-        return dtos;
-    }
+                                .declareParameters(
+                                                new SqlInOutParameter("statuscode", Types.INTEGER),
+                                                new SqlInOutParameter("message", Types.VARCHAR),
+                                                new SqlInOutParameter("resultset", Types.REF_CURSOR, new TagMapper()),
+                                                new SqlParameter("pi_id", Types.INTEGER),
+                                                new SqlParameter("pi_name", Types.VARCHAR),
+                                                new SqlParameter("pi_action", Types.VARCHAR));
 
-    public BaseResponseDto insertTag(TagDto tagDto) {
-        simpleJdbcCall.withProcedureName("sp_CRUD_tag").declareParameters(
-                new SqlParameter("id", Types.BIGINT),
-                new SqlParameter("name", Types.VARCHAR),
-                new SqlParameter("action", Types.VARCHAR));
+                MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+                parameterSource.addValue("pi_id", 0);
+                parameterSource.addValue("pi_name", "");
+                parameterSource.addValue("pi_action", "");
+                Map<String, Object> result = simpleJdbcCall.execute(parameterSource);
+                @SuppressWarnings("unchecked")
+                List<TagDto> dtos = (List<TagDto>) result.get("resultset");
+                Integer statusCode = (Integer) result.get("statuscode");
+                String message = (String) result.get("message");
+                return dtos;
+        }
 
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("id", 0);
-        parameterSource.addValue("name", tagDto.getName());
-        parameterSource.addValue("action", "INSERT");
+        public BaseResponseDto insertTag(TagDto tagDto) {
+                simpleJdbcCall.withSchemaName("cmdb").withProcedureName("sp_CRUD_tag").declareParameters(
+                                new SqlInOutParameter("statuscode", Types.INTEGER),
+                                new SqlInOutParameter("message", Types.VARCHAR),
+                                new SqlInOutParameter("resultset", Types.REF_CURSOR, new TagMapper()),
+                                new SqlParameter("pi_id", Types.BIGINT),
+                                new SqlParameter("pi_name", Types.VARCHAR),
+                                new SqlParameter("pi_action", Types.VARCHAR));
 
-        Map<String, Object> result = simpleJdbcCall.execute(parameterSource);
+                MapSqlParameterSource parameterSource = new MapSqlParameterSource();                
+                parameterSource.addValue("pi_id", 0);
+                parameterSource.addValue("pi_name", tagDto.getName());
+                parameterSource.addValue("pi_action", "INSERT");
 
-        BaseResponseDto dto = BaseResponseDto.builder()
-                .statusCode((Integer) result.get("statusCode"))
-                .message(result.get("message").toString())
-                .build();
+                Map<String, Object> result = simpleJdbcCall.execute(parameterSource);
 
-        return dto;
-    }
+                BaseResponseDto dto = BaseResponseDto.builder()
+                                .statusCode((Integer) result.get("statuscode"))
+                                .message(result.get("message").toString())
+                                .build();
 
-    public BaseResponseDto updateTag(TagDto tagDto) {
-        simpleJdbcCall.withProcedureName("sp_CRUD_tag").declareParameters(
-                new SqlParameter("id", Types.BIGINT),
-                new SqlParameter("name", Types.VARCHAR),
-                new SqlParameter("action", Types.VARCHAR));
+                return dto;
+        }
 
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("id", tagDto.getId());
-        parameterSource.addValue("name", tagDto.getName());
-        parameterSource.addValue("action", "UPDATE");
+        public BaseResponseDto updateTag(TagDto tagDto) {
+                simpleJdbcCall.withProcedureName("sp_CRUD_tag").declareParameters(
+                                new SqlParameter("id", Types.BIGINT),
+                                new SqlParameter("name", Types.VARCHAR),
+                                new SqlParameter("action", Types.VARCHAR));
 
-        Map<String, Object> result = simpleJdbcCall.execute(parameterSource);
+                MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+                parameterSource.addValue("id", tagDto.getId());
+                parameterSource.addValue("name", tagDto.getName());
+                parameterSource.addValue("action", "UPDATE");
 
-        BaseResponseDto dto = BaseResponseDto.builder()
-                .statusCode((Integer) result.get("statusCode"))
-                .message(result.get("message").toString())
-                .build();
+                Map<String, Object> result = simpleJdbcCall.execute(parameterSource);
 
-        return dto;
-    }
+                BaseResponseDto dto = BaseResponseDto.builder()
+                                .statusCode((Integer) result.get("statusCode"))
+                                .message(result.get("message").toString())
+                                .build();
 
-    public BaseResponseDto deleteTag(long tagId) {
-        simpleJdbcCall.withProcedureName("sp_CRUD_tag").declareParameters(
-                new SqlParameter("id", Types.BIGINT),
-                new SqlParameter("name", Types.VARCHAR),
-                new SqlParameter("action", Types.VARCHAR));
+                return dto;
+        }
 
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("id", tagId);
-        parameterSource.addValue("action", "DELETE");
+        public BaseResponseDto deleteTag(long tagId) {
+                simpleJdbcCall.withProcedureName("sp_CRUD_tag").declareParameters(
+                                new SqlParameter("id", Types.BIGINT),
+                                new SqlParameter("name", Types.VARCHAR),
+                                new SqlParameter("action", Types.VARCHAR));
 
-        Map<String, Object> result = simpleJdbcCall.execute(parameterSource);
+                MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+                parameterSource.addValue("id", tagId);
+                parameterSource.addValue("action", "DELETE");
 
-        BaseResponseDto dto = BaseResponseDto.builder()
-                .statusCode((Integer) result.get("statusCode"))
-                .message(result.get("message").toString())
-                .build();
+                Map<String, Object> result = simpleJdbcCall.execute(parameterSource);
 
-        return dto;
-    }
+                BaseResponseDto dto = BaseResponseDto.builder()
+                                .statusCode((Integer) result.get("statusCode"))
+                                .message(result.get("message").toString())
+                                .build();
+
+                return dto;
+        }
 
 }
