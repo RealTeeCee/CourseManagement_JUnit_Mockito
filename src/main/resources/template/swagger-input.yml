@@ -300,7 +300,7 @@ components:
         referenceId:
           type: string
           example: "14077430"
-        totalcreditAmount:
+        totalCreditAmount:
           type: number          
           example: 17100000.0
         policyNum:
@@ -473,7 +473,7 @@ components:
         referenceId:
           type: string
           example: "14077430"
-        totalcreditAmount:
+        totalCreditAmount:
           type: number          
           example: 17100000.0
         Detail:

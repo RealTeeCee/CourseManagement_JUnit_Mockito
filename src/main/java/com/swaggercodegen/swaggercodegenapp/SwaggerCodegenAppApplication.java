@@ -1,5 +1,7 @@
 package com.swaggercodegen.swaggercodegenapp;
 
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,7 +21,7 @@ public class SwaggerCodegenAppApplication {
 	CommandLineRunner commandLineRunner(
 			TransfromData service) {
 		return args -> {
-			TransactionDetail transform = service.transform();
+			List<TransactionDetail> transform = service.transform();
 		};
 	}
 
