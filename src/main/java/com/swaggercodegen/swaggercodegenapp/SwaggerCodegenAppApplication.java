@@ -22,6 +22,8 @@ public class SwaggerCodegenAppApplication {
 			TransfromData service) {
 		return args -> {
 			List<TransactionDetail> transform = service.transform();
+			List<TransactionDetail> transform2 = service.transform2();
+			String test = "";
 		};
 	}
 

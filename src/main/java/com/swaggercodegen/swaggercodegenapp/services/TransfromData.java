@@ -32,7 +32,11 @@ public class TransfromData {
 
         Stream<String> distinctOrderRef = rawTransactions.stream().map(rt -> rt.getOrderRef()).distinct();
         distinctOrderRef.forEach(or -> {
-            List<RawTransaction> filteredTransactions = rawTransactions.stream().filter(rt -> rt.getOrderRef() == or)
+            if (or.equals("feb6b654-6bd0-418b-8097-61119d56890f")) {
+                String a = or;
+            }
+            List<RawTransaction> filteredTransactions = rawTransactions.stream()
+                    .filter(rt -> rt.getOrderRef().equalsIgnoreCase(or))
                     .collect(Collectors.toList());
             TransactionDetail transactionDetail = new TransactionDetail();
             transactionDetail.setOrderRef(filteredTransactions.get(0).getOrderRef());
@@ -68,7 +72,7 @@ public class TransfromData {
                 transaction.setUserId(rt.getUserId());
                 transactions.add(transaction);
             });
-            
+
             transactionDetail.setDetail(transactions);
             transactionDetails.add(transactionDetail);
         });
@@ -76,6 +80,60 @@ public class TransfromData {
         // TransactionDetail transactionDetail = new TransactionDetail();
         // transactionDetail.getDetail().forEach(t);
         // Transaction transaction = new Transaction();
+        return transactionDetails;
+    }
+
+    public List<TransactionDetail> transform2() throws JsonMappingException, JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+
+        List<RawTransaction> rawTransactions = objectMapper.readValue(str, new TypeReference<List<RawTransaction>>() {
+        });
+        List<TransactionDetail> transactionDetails = new ArrayList<>();
+        int i, j = 0;
+        for (i = 0; i < rawTransactions.size(); i++) {
+            List<Transaction> transactions = new ArrayList<>();
+            TransactionDetail transactionDetail = new TransactionDetail();
+            transactionDetail.setOrderRef(rawTransactions.get(i).getOrderRef());
+            transactionDetail.setReferenceId(rawTransactions.get(i).getReferenceId());
+            transactionDetail.setTotalCreditAmount(rawTransactions.get(i).getTotalCreditAmount());
+            for (j = i; j < rawTransactions.size(); j++) {
+                if (rawTransactions.get(j).getOrderRef().equalsIgnoreCase(rawTransactions.get(i).getOrderRef())) {
+                    Transaction transaction = new Transaction();
+                    transaction.setAccnumOfPartner(rawTransactions.get(j).getAccnumOfPartner());
+                    transaction.setAccountName(rawTransactions.get(j).getAccountName());
+                    transaction.setAccountNum(rawTransactions.get(j).getAccountNum());
+                    transaction.setApplyDate(rawTransactions.get(j).getApplyDate());
+                    transaction.setBankDate(rawTransactions.get(j).getBankDate());
+                    transaction.setBankRef(rawTransactions.get(j).getBankRef());
+                    transaction.setBillId(rawTransactions.get(j).getBillId());
+                    transaction.setCreatedDate(rawTransactions.get(j).getCreatedDate());
+                    transaction.setCreditAmount(rawTransactions.get(j).getCreditAmount());
+                    transaction.setDebitAmount(rawTransactions.get(j).getDebitAmount());
+                    transaction.setDescription(rawTransactions.get(j).getDescription());
+                    transaction.setModifiedDate(rawTransactions.get(j).getModifiedDate());
+                    transaction.setPartnerName(rawTransactions.get(j).getPartnerName());
+                    transaction.setPaymentDate(rawTransactions.get(j).getPaymentDate());
+                    transaction.setPendingDays(rawTransactions.get(j).getPendingDays());
+                    transaction.setPolicyNum(rawTransactions.get(j).getPolicyNum());
+                    transaction.setPolicyStatus(rawTransactions.get(j).getPolicyStatus());
+                    transaction.setProposalNum(rawTransactions.get(j).getProposalNum());
+                    transaction.setReason(rawTransactions.get(j).getReason());
+                    transaction.setRemark(rawTransactions.get(j).getRemark());
+                    transaction.setReturnDate(rawTransactions.get(j).getReturnDate());
+                    transaction.setServiceType(rawTransactions.get(j).getServiceType());
+                    transaction.setStatus(rawTransactions.get(j).getStatus());
+                    transaction.setUserId(rawTransactions.get(j).getUserId());
+                    transactions.add(transaction);
+                } else {
+                    break;
+                }
+            }
+            transactionDetail.setDetail(transactions);
+            transactionDetails.add(transactionDetail);
+            i = j - 1;
+        }
+
         return transactionDetails;
     }
 }
