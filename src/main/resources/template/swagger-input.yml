@@ -182,6 +182,338 @@ paths:
                 $ref: "#/components/schemas/CategoryDto"
 components:
   schemas:
+    # ADMIN-WEB-BFF-MODEL-START
+    SearchParam:
+      type: object
+      properties:
+        policyNum:
+          type: string
+          example: "80059276"
+        proposalNum:
+          type: string
+          example: "80059276"
+        partnerName:
+          type: array
+          items:
+            type: string
+        accnumOfPartner:
+          type: string
+          example: "348394893"
+        paymentDateFrom:
+          type: string
+          format: date
+          example: "2023-07-05"
+        paymentDateTo:
+          type: string
+          format: date
+          example: "2023-07-05"
+        applyDateFrom:
+          type: string
+          format: date
+          example: "2023-07-05"
+        applyDateTo:
+          type: string
+          format: date
+          example: "2023-07-05"
+        bankDateFrom:
+          type: string
+          format: date
+          example: "2023-07-05"
+        bankDateTo:
+          type: string
+          format: date
+          example: "2023-07-05"
+        returnDateFrom:
+          type: string
+          format: date
+          example: "2023-07-05"
+        returnDateTo:
+          type: string
+          format: date
+          example: "2023-07-05"
+        serviceType:
+          type: array
+          items:
+            type: string
+        status:
+          type: array
+          items:
+            type: string
+        reason:
+          type: array
+          items:
+            type: string
+        pageSize:
+          type: integer
+          format: int32
+          example: 10
+        pageNo:
+          type: integer
+          format: int32
+          example: 1
+    PageTransaction:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int32
+          example: 100
+        totalPages:
+          type: integer
+          format: int32
+          example: 10
+        # size:
+        #   type: integer
+        #   format: int32
+        #   example: 10
+        # first:
+        #   type: boolean
+        #   example: true
+        # last:
+        #   type: boolean
+        #   example: false
+        numberOfElements:
+          type: integer
+          format: int32
+          example: 10
+        number:
+          type: integer
+          format: int32
+          example: 1
+        # empty:
+        #   type: boolean
+        #   example: false
+        content:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Transaction"
+        payeable:
+          "$ref": "#/components/schemas/PageableObject"
+        sort:
+          "$ref": "#/components/schemas/SortObject"
+    RawTransaction:
+      type: object
+      properties:
+        orderRef:
+          type: string          
+          example: "feb6b654-6bd0-418b-8097-61119d56890f"
+        referenceId:
+          type: string
+          example: "14077430"
+        totalcreditAmount:
+          type: number          
+          example: 17100000.0
+        policyNum:
+          type: string
+          example: "8005927"
+        proposalNum:
+          type: string
+          example: "8005927"
+        serviceType:
+          type: string
+          example: "5"
+          maxLength: 2
+        partnerName:
+          type: string
+          example: "VTBOL10(Bank Code in CAS)"
+        accnumOfPartner:
+          type: string
+          example: "060000373608"
+        paymentDate:
+          type: string
+          format: date
+          example: "2023-07-05"
+        bankDate:
+          type: string
+          format: date
+          example: "2023-07-05"
+        bankRef:
+          type: string
+          example: "FT123456789"
+        description:
+          type: string
+          example: "Thanh toan phi hop dong so 1234567890"
+        debitAmount:
+          type: number
+          example: 5.000
+        creditAmount:
+          type: number
+          example: 10.000
+        accountNum:
+          type: string
+          example: "6473264846"
+        accountName:
+          type: string
+          example: "Nguyen Van A"
+        billId:
+          type: string
+          example: "02023052900019"
+        policyStatus:
+          type: string
+          example: "Trả phí BH"
+        reason:
+          type: string
+          example: "301: đóng phí bảo hiểm, khác mode"
+        status:
+          type: string
+          example: "Pending"
+        applyDate:
+          type: string
+          format: date
+          example: "2023-07-05"
+        returnDate:
+          type: string
+          format: date
+          example: "2023-07-05"
+        pendingDays:
+          type: integer
+          format: int32
+          example: 30
+        userId:
+          type: string
+          example: "MOMO_USR"
+        modifiedDate:
+          type: string
+          format: date
+          example: "2023-07-05"
+        createdDate:
+          type: string
+          format: date
+        remark:
+          type: string
+          example: "Need to review this case later"
+    Transaction:
+      type: object
+      properties:
+        policyNum:
+          type: string
+          example: "8005927"
+        proposalNum:
+          type: string
+          example: "8005927"
+        serviceType:
+          type: string
+          example: "5"
+          maxLength: 2
+        partnerName:
+          type: string
+          example: "VTBOL10(Bank Code in CAS)"
+        accnumOfPartner:
+          type: string
+          example: "060000373608"
+        paymentDate:
+          type: string
+          format: date
+          example: "2023-07-05"
+        bankDate:
+          type: string
+          format: date
+          example: "2023-07-05"
+        bankRef:
+          type: string
+          example: "FT123456789"
+        description:
+          type: string
+          example: "Thanh toan phi hop dong so 1234567890"
+        debitAmount:
+          type: number
+          example: 5.000
+        creditAmount:
+          type: number
+          example: 10.000
+        accountNum:
+          type: string
+          example: "6473264846"
+        accountName:
+          type: string
+          example: "Nguyen Van A"
+        billId:
+          type: string
+          example: "02023052900019"
+        policyStatus:
+          type: string
+          example: "Trả phí BH"
+        reason:
+          type: string
+          example: "301: đóng phí bảo hiểm, khác mode"
+        status:
+          type: string
+          example: "Pending"
+        applyDate:
+          type: string
+          format: date
+          example: "2023-07-05"
+        returnDate:
+          type: string
+          format: date
+          example: "2023-07-05"
+        pendingDays:
+          type: integer
+          format: int32
+          example: 30
+        userId:
+          type: string
+          example: "MOMO_USR"
+        modifiedDate:
+          type: string
+          format: date
+          example: "2023-07-05"
+        createdDate:
+          type: string
+          format: date
+        remark:
+          type: string
+          example: "Need to review this case later"
+    TransactionDetail:
+      type: object
+      properties:
+        orderRef:
+          type: string          
+          example: "feb6b654-6bd0-418b-8097-61119d56890f"
+        referenceId:
+          type: string
+          example: "14077430"
+        totalcreditAmount:
+          type: number          
+          example: 17100000.0
+        Detail:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Transaction"        
+    PageableObject:
+      type: object
+      properties:
+        offset:
+          type: integer
+          format: int64
+          example: 0
+        sort:
+          "$ref": "#/components/schemas/SortObject"
+        pageSize:
+          type: integer
+          format: int32
+          example: 10
+        pageNumber:
+          type: integer
+          format: int32
+          example: 0
+        unpaged:
+          type: boolean
+          example: false
+        paged:
+          type: boolean
+          example: true
+    SortObject:
+      type: object
+      properties:
+        empty:
+          type: boolean
+        sorted:
+          type: boolean
+          example: false
+        unsorted:
+          type: boolean
+          example: true
     ErrorDetails:
       type: object
       properties:
@@ -1286,34 +1618,7 @@ components:
         pageable:
           "$ref": "#/components/schemas/PageableObject"
         empty:
-          type: boolean
-    PageableObject:
-      type: object
-      properties:
-        offset:
-          type: integer
-          format: int64
-        sort:
-          "$ref": "#/components/schemas/SortObject"
-        paged:
-          type: boolean
-        unpaged:
-          type: boolean
-        pageNumber:
-          type: integer
-          format: int32
-        pageSize:
-          type: integer
-          format: int32
-    SortObject:
-      type: object
-      properties:
-        empty:
-          type: boolean
-        unsorted:
-          type: boolean
-        sorted:
-          type: boolean
+          type: boolean       
     SearchDto:
       type: object
       properties:
